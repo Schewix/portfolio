@@ -1,0 +1,27 @@
+---
+title: "PKI rotation checklist for busy SRE teams"
+slug: "pki-rotation-checklist"
+date: "2025-03-21"
+tags:
+  - PKI
+  - Security
+summary: "A pragmatic checklist that prevents the most common certificate rotation failures."
+---
+
+PKI incidents are rarely about the crypto. They are about timing, ownership, and missing validation. This checklist is meant to be copy-pasted into your runbook.
+
+## Inventory the dependencies
+List every service that consumes the certificate. Include cron jobs, sidecars, and internal clients.
+
+## Dry-run the renewal
+Use a staging environment to validate the renewal flow end-to-end. Confirm that the certificate chain is correct.
+
+## Alert on expiration windows
+Create a dashboard showing the next 30/14/7 day expirations. Pair it with an alert for 14 days.
+
+## Validate after rollout
+Check the full chain of trust and any clients that pin certificates.
+
+<Callout title="Reminder" type="warn">
+Don’t rotate on Fridays unless you want a long weekend.
+</Callout>

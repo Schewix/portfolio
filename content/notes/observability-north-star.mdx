@@ -1,0 +1,28 @@
+---
+title: "Designing observability around questions, not dashboards"
+slug: "observability-north-star"
+date: "2024-12-10"
+tags:
+  - Observability
+  - Platform
+summary: "Dashboards are outcomes. Start with the operational questions you need answered."
+---
+
+A dashboard is only useful if it answers a question quickly. When teams start from dashboards, they miss the real operational context.
+
+## Start with the questions
+Ask “What could wake us up at 3am?” or “How do we know this release is safe?” The dashboard is a visual answer, not the starting point.
+
+## Create a minimal telemetry contract
+Every service should emit:
+
+- A request counter with status codes
+- A latency histogram
+- A saturation signal (queue depth, CPU, or worker backlog)
+
+## Build feedback loops
+Review every incident and ask: which question was missing? That question becomes a new panel or alert.
+
+<Callout title="North star" type="info">
+Observability is about reducing uncertainty under pressure.
+</Callout>

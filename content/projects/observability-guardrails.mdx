@@ -1,0 +1,28 @@
+---
+title: "Observability Guardrails"
+slug: "observability-guardrails"
+date: "2024-11-02"
+tags:
+  - Observability
+  - Reliability
+  - Platform
+summary: "A shared telemetry baseline that made services discoverable, debuggable, and consistent across teams."
+featured: true
+---
+
+A platform initiative to standardize metrics, logging, and tracing across multiple service stacks. The project introduced opinionated defaults and a lightweight review process.
+
+## Impact
+- Reduced mean time to detect by ~30% for critical services.
+- Cut onboarding time for new services by providing a telemetry starter kit.
+- Enabled cross-service correlation with consistent trace IDs.
+
+## Lessons learned
+- Defaults win: teams adopt standards faster when it is the easiest option.
+- Telemetry needs product thinking and clear success metrics.
+- Documentation matters as much as instrumentation.
+
+## Stack
+- OpenTelemetry collectors
+- Prometheus + Grafana dashboards
+- Loki log aggregation with structured logging

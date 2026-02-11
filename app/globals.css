@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 175 70% 45%;
+  --accent-foreground: 220 18% 10%;
+  --border: 214 32% 91%;
+  --ring: 175 70% 45%;
+}
+
+.dark {
+  --background: 222 47% 5%;
+  --foreground: 210 40% 98%;
+  --card: 222 47% 7%;
+  --card-foreground: 210 40% 98%;
+  --muted: 223 21% 12%;
+  --muted-foreground: 215 20% 70%;
+  --accent: 175 70% 45%;
+  --accent-foreground: 210 40% 98%;
+  --border: 223 20% 18%;
+  --ring: 175 70% 45%;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-background text-foreground antialiased;
+  background-image: radial-gradient(circle at 10% 10%, hsl(var(--accent) / 0.12), transparent 45%),
+    radial-gradient(circle at 90% 0%, hsl(var(--accent) / 0.08), transparent 40%);
+}
+
+main {
+  @apply min-h-screen;
+}
+
+::selection {
+  background: hsl(var(--accent) / 0.35);
+}
+
+.prose {
+  @apply max-w-none;
+}
+
+.prose :where(a):not(:where([class~="not-prose"] *)) {
+  @apply text-accent underline underline-offset-4;
+}
+
+.prose :where(h2,h3,h4):not(:where([class~="not-prose"] *)) {
+  @apply scroll-mt-24;
+}
+
+.prose pre {
+  @apply border border-border bg-muted/40 text-foreground shadow-soft;
+}
+
+.prose code {
+  @apply font-mono text-[0.9em];
+}
+
+.prose table {
+  @apply w-full border border-border;
+}
+
+.prose thead {
+  @apply bg-muted/60;
+}
+
+.prose th,
+.prose td {
+  @apply border border-border px-3 py-2;
+}
+
+.prose blockquote {
+  @apply border-l-2 border-accent pl-4 text-muted-foreground;
+}

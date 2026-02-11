@@ -1,0 +1,33 @@
+---
+title: "PKI Rotation Orchestrator"
+slug: "pki-rotation-orchestrator"
+date: "2025-07-18"
+tags:
+  - PKI
+  - Automation
+  - Security
+summary: "Automated certificate issuance and rotation workflows that reduced manual toil and shortened incident response time."
+repoUrl: "https://github.com/USERNAME/pki-rotation-orchestrator"
+featured: true
+---
+
+A small orchestration service that coordinates certificate lifecycle events across internal services. The goal was to replace ad-hoc manual renewals with a predictable, audited pipeline.
+
+## Impact
+- Reduced certificate renewal toil from hours to minutes per month.
+- Standardized rotation windows across 40+ services.
+- Added audit trails for compliance reviews.
+
+## Lessons learned
+- Clear ownership is as important as the automation itself.
+- Rotation safety depends on pre-flight checks and rapid rollback.
+- Certificate issuance needs to be observable, not just automated.
+
+## Stack
+- HashiCorp Vault PKI
+- GitOps workflows with policy checks
+- Prometheus alerts + Slack notifications
+
+<Callout title="Why it mattered" type="info">
+This project cut the most common post-expiry incidents by introducing proactive rotation schedules and visibility.
+</Callout>
