@@ -1,0 +1,106 @@
+---
+title: "Zelená liga"
+slug: "zelena-liga"
+date: "2025-06-01"
+tags:
+  - Platform
+  - Offline-first
+  - Next.js
+  - Supabase
+  - Reliability
+summary: "Modular competition platform combining offline-first scoring, role-based workflows, and a public content site with automated media ingestion."
+featured: true
+submodules:
+  - Field Scoring Module
+  - Public Website
+  - Media Pipeline
+  - Real-time Scoreboard
+---
+
+## Overview
+
+Zelená liga is a modular platform built to operate real-world outdoor competitions.
+It combines field scoring, judge workflows, and a public website into one coherent system.
+
+The key constraint: unreliable connectivity and operational simplicity.
+In practice, that means a field competition platform with resilient data collection and publishing workflows.
+
+---
+
+## Modules
+
+<ModulesGrid>
+  <ModuleCard title="1) Field Scoring Module">
+    <ul>
+      <li>Offline-first scoring for multiple stations</li>
+      <li>QR-based team identification</li>
+      <li>Local queue (IndexedDB/localforage)</li>
+      <li>Sync with retry/backoff</li>
+      <li>Idempotent writes to prevent duplication</li>
+      <li>Role-based access (Supabase RLS)</li>
+    </ul>
+  </ModuleCard>
+  <ModuleCard title="2) Public Website">
+    <ul>
+      <li>Competition information</li>
+      <li>Articles and results</li>
+      <li>Structured routing</li>
+      <li>SEO-optimized pages</li>
+    </ul>
+  </ModuleCard>
+  <ModuleCard title="3) Media Pipeline">
+    <ul>
+      <li>Event photos stored in Google Drive</li>
+      <li>Folder-based structure per year/event</li>
+      <li>Automated ingestion and rendering</li>
+      <li>Lazy loading and performance optimizations</li>
+    </ul>
+  </ModuleCard>
+  <ModuleCard title="4) Real-time Scoreboard">
+    <ul>
+      <li>Supabase Realtime updates</li>
+      <li>Aggregated results view</li>
+      <li>Optimized for projector/mobile</li>
+    </ul>
+  </ModuleCard>
+</ModulesGrid>
+
+---
+
+## Architecture
+
+High-level description (no secrets):
+
+- Next.js frontend
+- Express auth/manifest backend
+- Supabase (Auth, Postgres, RLS policies)
+- Offline-first pattern:
+  - local-first writes
+  - outbox queue
+  - sync reconciliation
+- Conflict strategy: last-write-wins with idempotent operations
+- Deployment: Vercel
+
+---
+
+## Impact
+
+- Reduced manual result aggregation time by ~60% during event windows.
+- Zero data loss reported in staged connectivity outage drills.
+- Improved operational clarity for judges across multiple stations.
+- Faster public publishing of results and galleries after event close.
+
+---
+
+## Lessons learned
+
+- Connectivity is a feature, not a guarantee.
+- Operational UX matters more than feature count.
+- Small systems still need reliability patterns.
+- Schema design and RLS policies shape the entire workflow.
+
+---
+
+## Stack
+
+Next.js · TypeScript · Supabase · Express · Vercel · IndexedDB/localforage · ZXing (QR scanning)

@@ -17,6 +17,8 @@ export type Project = {
   date: string;
   updated?: string;
   tags: string[];
+  submodules?: string[];
+  parentProjectSlug?: string;
   summary: string;
   repoUrl?: string;
   liveUrl?: string;
@@ -68,9 +70,11 @@ const getMdxFiles = (dir: string) =>
     .filter((file) => file.endsWith(".mdx"))
     .map((file) => path.join(dir, file));
 
-const normalizeTags = (value: unknown): string[] => {
+const parseStringArray = (value: unknown): string[] => {
   if (!Array.isArray(value)) return [];
-  return value.map((tag) => String(tag));
+  return value
+    .map((item) => String(item).trim())
+    .filter((item) => item.length > 0);
 };
 
 const parseDate = (value: unknown, fallback: string) =>
@@ -79,6 +83,9 @@ const parseDate = (value: unknown, fallback: string) =>
 const parseOptionalDate = (value: unknown) =>
   typeof value === "string" && value.trim().length ? value : undefined;
 
+const parseOptionalString = (value: unknown) =>
+  typeof value === "string" && value.trim().length ? value.trim() : undefined;
+
 const readProject = (filePath: string): Project => {
   const raw = fs.readFileSync(filePath, "utf8");
   const { data, content } = matter(raw);
@@ -86,13 +93,16 @@ const readProject = (filePath: string): Project => {
     ? data.slug
     : path.basename(filePath, ".mdx");
   const date = parseDate(data.date, new Date().toISOString());
+  const submodules = parseStringArray(data.submodules);
 
   return {
     title: String(data.title ?? "Untitled project"),
     slug,
     date,
     updated: parseOptionalDate(data.updated),
-    tags: normalizeTags(data.tags),
+    tags: parseStringArray(data.tags),
+    submodules: submodules.length ? submodules : undefined,
+    parentProjectSlug: parseOptionalString(data.parentProjectSlug),
     summary: String(data.summary ?? ""),
     repoUrl: data.repoUrl ? String(data.repoUrl) : undefined,
     liveUrl: data.liveUrl ? String(data.liveUrl) : undefined,
@@ -117,7 +127,7 @@ const readNote = (filePath: string): Note => {
     slug,
     date,
     updated: parseOptionalDate(data.updated),
-    tags: normalizeTags(data.tags),
+    tags: parseStringArray(data.tags),
     summary: String(data.summary ?? ""),
     content,
     readingTime: Math.ceil(readingTime(content).minutes),
@@ -133,7 +143,13 @@ export const getAllProjects = cache(() =>
 );
 
 export const getFeaturedProjects = () =>
-  getAllProjects().filter((project) => project.featured);
+  getAllProjects()
+    .filter((project) => project.featured)
+    .sort((a, b) => {
+      if (a.slug === "zelena-liga" && b.slug !== "zelena-liga") return -1;
+      if (b.slug === "zelena-liga" && a.slug !== "zelena-liga") return 1;
+      return Number(new Date(b.date)) - Number(new Date(a.date));
+    });
 
 export const getAllNotes = cache(() =>
   getMdxFiles(notesDir)

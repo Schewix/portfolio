@@ -31,6 +31,9 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
   if (!project) {
     notFound();
   }
+  const parentProject = project.parentProjectSlug
+    ? getProjectBySlug(project.parentProjectSlug)
+    : undefined;
 
   return (
     <div className="grid gap-10 lg:grid-cols-[1fr_280px]">
@@ -46,6 +49,14 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
               <TagBadge key={tag} label={tag} />
             ))}
           </div>
+          {parentProject ? (
+            <p className="text-sm text-muted-foreground">
+              Part of:{" "}
+              <Link href={parentProject.url} className="text-accent hover:text-accent/90">
+                {parentProject.title}
+              </Link>
+            </p>
+          ) : null}
         </header>
         <div className="prose prose-neutral dark:prose-invert">
           <Mdx source={project.content} />
