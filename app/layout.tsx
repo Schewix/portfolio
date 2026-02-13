@@ -7,7 +7,7 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { CommandPalette } from "@/components/command-palette";
 import { AnalyticsProvider } from "@/components/analytics";
-import { siteConfig } from "@/lib/site";
+import { siteConfig } from "@/config/site";
 import { getAllNotes, getAllProjects } from "@/lib/content";
 
 const sora = Sora({

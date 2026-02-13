@@ -1,5 +1,5 @@
 import type { Note } from "@/lib/content";
-import { siteConfig } from "./site";
+import { siteConfig } from "@/config/site";
 
 const escapeXml = (value: string) =>
   value

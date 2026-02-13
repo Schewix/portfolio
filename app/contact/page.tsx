@@ -1,10 +1,11 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { CopyEmail } from "@/components/copy-email";
-import { siteConfig } from "@/lib/site";
+import { QuickMessageForm } from "@/components/quick-message-form";
+import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -22,57 +23,55 @@ export default function ContactPage() {
     <div className="space-y-10">
       <div className="space-y-3">
         <h1 className="text-3xl font-semibold">Contact</h1>
-        <p className="text-muted-foreground">
-          Want to collaborate or talk reliability? Drop a note. I usually reply
-          within a couple of days.
-        </p>
+        <p className="text-muted-foreground">{siteConfig.copy.contactIntro}</p>
       </div>
 
       <section className="grid gap-6 md:grid-cols-3">
-        <Card>
-          <h2 className="text-lg font-semibold">Email</h2>
-          <p className="mt-2 text-sm text-muted-foreground">{siteConfig.email}</p>
+        <Card className="border-border/80 bg-card/70">
+          <h2 className="inline-flex items-center gap-2 text-lg font-semibold">
+            <Mail className="h-4 w-4 text-accent" /> Email
+          </h2>
+          <p className="mt-2 text-sm text-muted-foreground">{siteConfig.links.email}</p>
           <div className="mt-4 flex items-center gap-2">
             <Button asChild variant="secondary">
-              <a href={`mailto:${siteConfig.email}`}>Send email</a>
+              <a href={`mailto:${siteConfig.links.email}`}>Send email</a>
             </Button>
-            <CopyEmail email={siteConfig.email} />
+            <CopyEmail email={siteConfig.links.email} />
           </div>
         </Card>
-        <Card>
-          <h2 className="text-lg font-semibold">LinkedIn</h2>
+
+        <Card className="border-border/80 bg-card/70">
+          <h2 className="inline-flex items-center gap-2 text-lg font-semibold">
+            <Linkedin className="h-4 w-4 text-accent" /> LinkedIn
+          </h2>
           <p className="mt-2 text-sm text-muted-foreground">/in/osevcik11</p>
           <Button asChild variant="secondary" className="mt-4">
-            <Link href={siteConfig.linkedin}>Open profile</Link>
+            <Link href={siteConfig.links.linkedin}>
+              Open profile <ArrowUpRight className="h-4 w-4" />
+            </Link>
           </Button>
         </Card>
-        <Card>
-          <h2 className="text-lg font-semibold">GitHub</h2>
-          <p className="mt-2 text-sm text-muted-foreground">Placeholder</p>
+
+        <Card className="border-border/80 bg-card/70">
+          <h2 className="inline-flex items-center gap-2 text-lg font-semibold">
+            <Github className="h-4 w-4 text-accent" /> GitHub
+          </h2>
+          <p className="mt-2 text-sm text-muted-foreground">{siteConfig.links.github}</p>
           <Button asChild variant="secondary" className="mt-4">
-            <Link href={siteConfig.github}>Open GitHub</Link>
+            <Link href={siteConfig.links.github}>
+              Open GitHub <ArrowUpRight className="h-4 w-4" />
+            </Link>
           </Button>
         </Card>
       </section>
 
       <section className="space-y-4">
         <h2 className="text-2xl font-semibold">Quick message</h2>
-        <Card>
-          <form
-            action={`mailto:${siteConfig.email}`}
-            method="post"
-            encType="text/plain"
-            className="space-y-4"
-          >
-            <Input name="subject" placeholder="Subject" />
-            <textarea
-              name="body"
-              placeholder="Message"
-              rows={5}
-              className="w-full rounded-2xl border border-border/70 bg-card/40 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            />
-            <Button type="submit">Open email client</Button>
-          </form>
+        <Card className="border-border/80 bg-card/70">
+          <QuickMessageForm
+            email={siteConfig.links.email}
+            linkedin={siteConfig.links.linkedin}
+          />
         </Card>
       </section>
     </div>

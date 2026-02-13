@@ -11,7 +11,7 @@ export function CommandPaletteTrigger() {
       aria-label="Open command palette"
     >
       <Command className="h-3.5 w-3.5" />
-      <span>⌘K</span>
+      <span className="hidden sm:inline">⌘K</span>
     </button>
   );
 }

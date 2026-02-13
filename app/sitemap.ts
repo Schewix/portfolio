@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { siteConfig } from "@/lib/site";
+import { siteConfig } from "@/config/site";
 import { getAllNotes, getAllProjects } from "@/lib/content";
 
 export default function sitemap(): MetadataRoute.Sitemap {

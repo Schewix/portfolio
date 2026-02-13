@@ -1,15 +1,25 @@
 import Link from "next/link";
+import {
+  Building2,
+  FileDown,
+  Github,
+  Linkedin,
+  Mail,
+  MapPin,
+  UserRound
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ProjectCard } from "@/components/project-card";
 import { NoteCard } from "@/components/note-card";
 import { NowBox } from "@/components/now-box";
 import { getFeaturedProjects, getLatestNotes } from "@/lib/content";
-import { siteConfig } from "@/lib/site";
+import { siteConfig } from "@/config/site";
 
 export default function HomePage() {
   const featuredProjects = getFeaturedProjects().slice(0, 3);
   const latestNotes = getLatestNotes(3);
+  const latestFeatured = featuredProjects[0];
 
   return (
     <div className="space-y-20">
@@ -19,13 +29,10 @@ export default function HomePage() {
             {siteConfig.company} · {siteConfig.location}
           </p>
           <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">
-            Ondřej Ševčík
+            {siteConfig.name}
           </h1>
-          <p className="text-lg text-muted-foreground">
-            SRE/DevOps engineer focused on automation, platform reliability, and
-            security-adjacent systems. I build calm, observable infrastructure
-            with pragmatic guardrails.
-          </p>
+          <p className="text-lg text-muted-foreground">{siteConfig.copy.homeIntro}</p>
+          <p className="text-sm text-accent">{siteConfig.signatureLine}</p>
           <div className="flex flex-wrap gap-3">
             <Button asChild>
               <Link href="/projects">View Projects</Link>
@@ -33,33 +40,72 @@ export default function HomePage() {
             <Button variant="secondary" asChild>
               <Link href="/notes">Read Notes</Link>
             </Button>
+            <Button variant="ghost" asChild>
+              <Link href="/contact">Contact</Link>
+            </Button>
           </div>
         </div>
+
         <div className="space-y-6">
-          <Card>
+          <Card className="border-border/80 bg-card/70">
             <div className="text-sm uppercase tracking-[0.3em] text-muted-foreground">
               Snapshot
             </div>
             <div className="mt-4 space-y-3 text-sm text-muted-foreground">
-              <div className="flex items-center justify-between">
-                <span>Role</span>
-                <span className="text-foreground">{siteConfig.role}</span>
+              <div className="flex items-center justify-between gap-2">
+                <span className="inline-flex items-center gap-2">
+                  <UserRound className="h-4 w-4" /> Role
+                </span>
+                <span className="text-right text-foreground">{siteConfig.role}</span>
               </div>
-              <div className="flex items-center justify-between">
-                <span>Currently</span>
-                <span className="text-foreground">SRE @ Red Hat</span>
+              <div className="flex items-center justify-between gap-2">
+                <span className="inline-flex items-center gap-2">
+                  <Building2 className="h-4 w-4" /> Currently
+                </span>
+                <span className="text-right text-foreground">{siteConfig.currentRole}</span>
               </div>
-              <div className="flex items-center justify-between">
-                <span>Location</span>
-                <span className="text-foreground">Brno</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span>Focus</span>
-                <span className="text-foreground">Automation + PKI</span>
+              <div className="flex items-center justify-between gap-2">
+                <span className="inline-flex items-center gap-2">
+                  <MapPin className="h-4 w-4" /> Location
+                </span>
+                <span className="text-right text-foreground">{siteConfig.location}</span>
               </div>
             </div>
+
+            <div className="mt-5 grid grid-cols-3 gap-2 text-xs">
+              <Button asChild variant="secondary" className="h-8 px-2">
+                <a href={`mailto:${siteConfig.links.email}`}>
+                  <Mail className="h-3.5 w-3.5" /> Email
+                </a>
+              </Button>
+              <Button asChild variant="secondary" className="h-8 px-2">
+                <Link href={siteConfig.links.linkedin}>
+                  <Linkedin className="h-3.5 w-3.5" /> LinkedIn
+                </Link>
+              </Button>
+              <Button asChild variant="secondary" className="h-8 px-2">
+                <Link href={siteConfig.links.github}>
+                  <Github className="h-3.5 w-3.5" /> GitHub
+                </Link>
+              </Button>
+            </div>
+
+            {siteConfig.links.cvUrl ? (
+              <Button asChild variant="ghost" className="mt-3 w-full">
+                <Link href={siteConfig.links.cvUrl}>
+                  <FileDown className="h-4 w-4" /> Open CV
+                </Link>
+              </Button>
+            ) : null}
           </Card>
-          <NowBox />
+
+          <NowBox
+            recently={
+              latestFeatured
+                ? `${latestFeatured.title} (${latestFeatured.tags[0] || "project"})`
+                : undefined
+            }
+          />
         </div>
       </section>
 
@@ -68,29 +114,8 @@ export default function HomePage() {
           <h2 className="text-2xl font-semibold">What I do</h2>
         </div>
         <div className="grid gap-6 md:grid-cols-2">
-          {[
-            {
-              title: "Reliability",
-              description:
-                "Designing resilient systems, SLOs, and incident response playbooks that scale with teams."
-            },
-            {
-              title: "Automation",
-              description:
-                "Reducing toil with self-service tooling, policy-as-code, and GitOps workflows."
-            },
-            {
-              title: "Platform",
-              description:
-                "Building developer platforms that hide complexity and keep feedback loops fast."
-            },
-            {
-              title: "Security / PKI",
-              description:
-                "Automating certificate lifecycles, secrets hygiene, and secure-by-default patterns."
-            }
-          ].map((item) => (
-            <Card key={item.title}>
+          {siteConfig.whatIDo.map((item) => (
+            <Card key={item.title} className="border-border/80 bg-card/70">
               <h3 className="text-lg font-semibold">{item.title}</h3>
               <p className="mt-2 text-sm text-muted-foreground">
                 {item.description}

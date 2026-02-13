@@ -15,11 +15,15 @@ The site runs on `http://localhost:3000`.
 
 ### Projects
 - Add a new file in `content/projects/` (MDX).
-- Frontmatter fields: `title`, `slug`, `date`, `tags`, `summary`, `repoUrl?`, `liveUrl?`, `featured`.
+- Frontmatter fields: `title`, `slug`, `date`, `updated?`, `tags`, `summary`, `repoUrl?`, `liveUrl?`, `featured`.
 
 ### Notes
 - Add a new file in `content/notes/` (MDX).
-- Frontmatter fields: `title`, `slug`, `date`, `tags`, `summary`.
+- Frontmatter fields: `title`, `slug`, `date`, `updated?`, `tags`, `summary`.
+
+### Site profile/config
+- Edit `config/site.ts` for personal data, social links, hero copy, “now” bullets, community items, and toolbox groups.
+- `NEXT_PUBLIC_SHOW_UPCOMING_IDEAS=true` enables the optional “Upcoming / Ideas” section on `/projects`.
 
 MDX files are parsed at build/runtime using `gray-matter` and rendered with
 `next-mdx-remote` (App Router RSC).

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Card } from "@/components/ui/card";
-import { siteConfig } from "@/lib/site";
+import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
   title: "Uses",

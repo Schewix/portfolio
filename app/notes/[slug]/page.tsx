@@ -4,6 +4,7 @@ import { TagBadge } from "@/components/tag-badge";
 import { Card } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils";
 import { getAllNotes, getNoteBySlug } from "@/lib/content";
+import { siteConfig } from "@/config/site";
 
 export const generateStaticParams = async () =>
   getAllNotes().map((note) => ({ slug: note.slug }));
@@ -13,7 +14,13 @@ export const generateMetadata = ({ params }: { params: { slug: string } }) => {
   if (!note) return {};
   return {
     title: note.title,
-    description: note.summary
+    description: note.summary,
+    openGraph: {
+      title: note.title,
+      description: note.summary,
+      type: "article",
+      url: `${siteConfig.url}${note.url}`
+    }
   };
 };
 
@@ -33,6 +40,11 @@ export default function NotePage({ params }: { params: { slug: string } }) {
           </p>
           <h1 className="text-3xl font-semibold">{note.title}</h1>
           <p className="text-lg text-muted-foreground">{note.summary}</p>
+          {note.updated ? (
+            <p className="text-xs text-muted-foreground">
+              Last updated {formatDate(note.updated)}
+            </p>
+          ) : null}
           <div className="flex flex-wrap gap-2">
             {note.tags.map((tag) => (
               <TagBadge key={tag} label={tag} />

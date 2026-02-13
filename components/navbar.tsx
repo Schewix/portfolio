@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { CommandPaletteTrigger } from "@/components/command-palette-trigger";
+import { MobileNav } from "@/components/mobile-nav";
 
 const navItems = [
   { href: "/projects", label: "Projects" },
@@ -13,8 +14,11 @@ export function Navbar() {
   return (
     <header className="fixed top-0 z-50 w-full border-b border-border/40 bg-background/70 backdrop-blur">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6">
-        <Link href="/" className="text-sm font-semibold tracking-wide">
-          Ondřej Ševčík
+        <Link href="/" className="inline-flex items-center gap-3 text-sm font-semibold tracking-wide">
+          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/70 bg-card/60 text-[11px] tracking-[0.2em] text-accent">
+            OS
+          </span>
+          <span>Ondřej Ševčík</span>
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
           {navItems.map((item) => (
@@ -30,6 +34,7 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <CommandPaletteTrigger />
           <ThemeToggle />
+          <MobileNav items={navItems} />
         </div>
       </div>
     </header>

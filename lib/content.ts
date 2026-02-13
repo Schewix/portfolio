@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { cache } from "react";
 import matter from "gray-matter";
 import readingTime from "reading-time";
 import GithubSlugger from "github-slugger";
@@ -14,6 +15,7 @@ export type Project = {
   title: string;
   slug: string;
   date: string;
+  updated?: string;
   tags: string[];
   summary: string;
   repoUrl?: string;
@@ -29,6 +31,7 @@ export type Note = {
   title: string;
   slug: string;
   date: string;
+  updated?: string;
   tags: string[];
   summary: string;
   content: string;
@@ -73,6 +76,9 @@ const normalizeTags = (value: unknown): string[] => {
 const parseDate = (value: unknown, fallback: string) =>
   typeof value === "string" && value.trim().length ? value : fallback;
 
+const parseOptionalDate = (value: unknown) =>
+  typeof value === "string" && value.trim().length ? value : undefined;
+
 const readProject = (filePath: string): Project => {
   const raw = fs.readFileSync(filePath, "utf8");
   const { data, content } = matter(raw);
@@ -85,6 +91,7 @@ const readProject = (filePath: string): Project => {
     title: String(data.title ?? "Untitled project"),
     slug,
     date,
+    updated: parseOptionalDate(data.updated),
     tags: normalizeTags(data.tags),
     summary: String(data.summary ?? ""),
     repoUrl: data.repoUrl ? String(data.repoUrl) : undefined,
@@ -109,6 +116,7 @@ const readNote = (filePath: string): Note => {
     title: String(data.title ?? "Untitled note"),
     slug,
     date,
+    updated: parseOptionalDate(data.updated),
     tags: normalizeTags(data.tags),
     summary: String(data.summary ?? ""),
     content,
@@ -118,18 +126,20 @@ const readNote = (filePath: string): Note => {
   };
 };
 
-export const getAllProjects = () =>
+export const getAllProjects = cache(() =>
   getMdxFiles(projectsDir)
     .map(readProject)
-    .sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date)));
+    .sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date)))
+);
 
 export const getFeaturedProjects = () =>
   getAllProjects().filter((project) => project.featured);
 
-export const getAllNotes = () =>
+export const getAllNotes = cache(() =>
   getMdxFiles(notesDir)
     .map(readNote)
-    .sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date)));
+    .sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date)))
+);
 
 export const getLatestNotes = (count = 3) => getAllNotes().slice(0, count);
 
@@ -153,4 +163,12 @@ export const getNoteTags = () => {
     note.tags.forEach((tag) => tags.add(tag))
   );
   return Array.from(tags).sort();
+};
+
+export const getProjectsLastUpdated = () => {
+  const projects = getAllProjects();
+  if (!projects.length) return undefined;
+  return projects
+    .map((project) => project.updated || project.date)
+    .sort((a, b) => Number(new Date(b)) - Number(new Date(a)))[0];
 };

@@ -5,6 +5,7 @@ import { TagBadge } from "@/components/tag-badge";
 import { Card } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils";
 import { getAllProjects, getProjectBySlug } from "@/lib/content";
+import { siteConfig } from "@/config/site";
 
 export const generateStaticParams = async () =>
   getAllProjects().map((project) => ({ slug: project.slug }));
@@ -14,7 +15,13 @@ export const generateMetadata = ({ params }: { params: { slug: string } }) => {
   if (!project) return {};
   return {
     title: project.title,
-    description: project.summary
+    description: project.summary,
+    openGraph: {
+      title: project.title,
+      description: project.summary,
+      type: "article",
+      url: `${siteConfig.url}${project.url}`
+    }
   };
 };
 
