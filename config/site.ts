@@ -59,7 +59,7 @@ export const siteConfig = {
     email: env.email || "hello@example.com",
     linkedin: env.linkedin || "https://www.linkedin.com/in/osevcik11",
     github: env.github || "https://github.com/USERNAME",
-    cvUrl: env.cvUrl || ""
+    cvUrl: env.cvUrl || "/cv/sevcik_ondrej_cv.pdf"
   },
   now: {
     current: [

@@ -24,6 +24,7 @@ The site runs on `http://localhost:3000`.
 ### Site profile/config
 - Edit `config/site.ts` for personal data, social links, hero copy, “now” bullets, community items, and toolbox groups.
 - `NEXT_PUBLIC_SHOW_UPCOMING_IDEAS=true` enables the optional “Upcoming / Ideas” section on `/projects`.
+- Place CV file in `public/cv/` and optionally override URL via `NEXT_PUBLIC_CV_URL`.
 
 MDX files are parsed at build/runtime using `gray-matter` and rendered with
 `next-mdx-remote` (App Router RSC).
